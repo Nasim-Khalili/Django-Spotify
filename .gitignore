@@ -1,0 +1,39 @@
+# Ignore Python bytecode files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Ignore virtual environment
+venv/
+env/
+
+# Ignore Django secret key file (if you have one)
+*.json
+
+# Ignore database files (if using SQLite)
+db.sqlite3
+*.sqlite3
+
+# Ignore environment variables file
+.env
+
+# Ignore compiled files
+*.pyc
+*.pyo
+
+# Ignore logs
+logs/
+*.log
+
+# Ignore media/uploads (optional)
+media/
+uploads/
+
+# Ignore IDE files
+.vscode/
+.idea/
+*.swp
+
+# Ignore dependencies
+node_modules/
