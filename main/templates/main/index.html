@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>NaNa - Spotify</title>
+<style>
+    .hidden-player {
+        position: absolute;
+        left: 9999999px;
+    }
+    .play-button {
+        padding: 10px 20px;
+        background-color: pink;
+        color: white;
+        border: none;
+        margin-bottom: 10px;
+    }
+    .song-list {
+        margin-top: 20px;
+        display: grid;
+        place-items: center;
+    }
+</style>
+</head>
+<body>
+    {% for song in songs %}
+
+    <h3>{{song.title}}</h3>
+    <a href="?play={{ song.id }}">
+        <button class="play-button">Play</button>
+    </a>
+    <img src="{{ song.cover_image.url }}"alt="">
+    
+    {% endfor %}
+
+    {% if play_song %}
+       <iframe class="hidden-player" src="{{ play_song.youtube_url_modify }}" allow="autopla; encrypted-media" allowfullscreen></iframe>
+    {% endif %}
+</body>
+</html>
+
