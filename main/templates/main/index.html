@@ -1,40 +1,66 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>NaNa - Spotify</title>
-<style>
-    .hidden-player {
-        position: absolute;
-        left: 9999999px;
-    }
-    .play-button {
-        padding: 10px 20px;
-        background-color: pink;
-        color: white;
-        border: none;
-        margin-bottom: 10px;
-    }
-    .song-list {
-        margin-top: 20px;
-        display: grid;
-        place-items: center;
-    }
-</style>
+    <title>NaNa - Spotify</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            min-height: 100vh;
+            background-color: #f5f5f5;
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+
+        .song-container {
+            background: white;
+            padding: 20px;
+            margin: 20px;
+            margin-bottom: 10px
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            width: 250px;
+            text-align: center;
+        }
+
+        .play-button {
+            padding: 10px 20px;
+            background-color: orange;
+            color: white;
+            border: none;
+            margin-top: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: 0.3s;
+        }
+
+        .hidden-player {
+            position: absolute;
+            left: -999999px;
+        }
+
+        img {
+            width: 200px;
+            border-radius: 10px;
+            margin-top: 10px
+        }
+    </style>
 </head>
 <body>
     {% for song in songs %}
-
-    <h3>{{song.title}}</h3>
-    <a href="?play={{ song.id }}">
-        <button class="play-button">Play</button>
-    </a>
-    <img src="{{ song.cover_image.url }}"alt="">
-    
+    <div class="song-container">
+        <h3>{{ song.title }}</h3>
+        <a href="?play={{ song.id }}">
+            <button class="play-button">Play</button>
+        </a>
+        <img src="{{ song.cover_image.url }}" alt="">
+    </div>
     {% endfor %}
 
     {% if play_song %}
-       <iframe class="hidden-player" src="{{ play_song.youtube_url_modify }}" allow="autopla; encrypted-media" allowfullscreen></iframe>
+        <iframe class="hidden-player" src="{{ play_song.youtube_url_modify }}" allow="autoplay; encrypted-media" allowfullscreen></iframe>
     {% endif %}
 </body>
 </html>
-
