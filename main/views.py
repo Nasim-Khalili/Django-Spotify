@@ -60,3 +60,17 @@ def logout_user(request):
     logout(request)
     print("Successfully logged out!!!")
     return redirect('index')
+
+def create_playlist(request):
+    if request.method == "POST":
+        name_playlist = request.POST.get("name-playlist")
+
+        if request.user.is_authenticated:
+            create_playlist = Playlist.objects.create(name=name_playlist, user=request.user)
+            create_playlist.save()
+            return redirect("index")
+
+        else:
+            return redirect('index')
+        
+    return render(request, 'main/create_playlist.html')
