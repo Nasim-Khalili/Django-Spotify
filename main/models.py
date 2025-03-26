@@ -1,4 +1,6 @@
 from django.db import models
+from django.contrib.auth.models import User
+
 
 # Songs Model
 
@@ -21,3 +23,14 @@ class Song(models.Model):
             video_id = self.audio_url.split("v=")[-1].split("&")[0]
 
         return f"https://www.youtube.com/embed/{video_id}?autoplay=1&controls=0&showinfo=0&autohide=1"
+    
+
+class Playlist(models.Model):
+    
+    name = models.CharField(max_length=100)
+    user = models.ForeignKey(User, on_delete=CASCADE, related_name='playlist')
+    song = models.ManyToManyField(Song, related_name="playlist")
+    
+    def __str__(self):
+        return f"{self.name} - {self.user}"
+    
