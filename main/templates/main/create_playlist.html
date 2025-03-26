@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Create New Playlist</title>
+</head>
+<body style="display: flex; justify-content: center; align-items: center; flex-direction: column; min-height: 100vh; background-color: #000; font-family: Arial, sans-serif; text-align: center;">
+    <form method="post" class="create-playlist-form">
+        {% csrf_token %}
+        <input placeholder="Name of the playlist :)" type="text" name="name-playlist" required>
+        <button type="submit">Create</button>
+    </form>
+</body>
+</html>
