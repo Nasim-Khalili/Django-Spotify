@@ -74,3 +74,46 @@ def create_playlist(request):
             return redirect('index')
         
     return render(request, 'main/create_playlist.html')
+
+
+def view_playlist(request, pk):
+    if request.user.is_authenticated:
+        playlist = Playlist.objects.get(id=pk, user=request.user)
+        play_song_id = request.GET.get('play', None)
+        shuffle = request.GET.get('shuffle', 'false') == 'true'
+        play_song = None
+        next_song = None
+
+        playlist_list = list(playlist.song.all())
+        
+        if play_song_id:
+            play_song = Song.objects.get(id=play_song_id)
+        
+        if shuffle and playlist_list:
+            possible_songs = []
+
+            for song in playlist_list:
+                if song != play_song:
+                    possible_songs.append(song)
+
+            if possible_songs:
+                next_song = choice(possible_songs)
+
+        else:
+            if play_song in playlist_list:
+                current_index = playlist_list.index(play_song)
+                loop_playlist = (current_index + 1) % len(playlist_list)
+                next_song = playlist_list[loop_playlist]
+
+        return render(request, 'main/view_playlist.html', {"playlist": playlist, "next_song": next_song, "play_song": play_song, "shuffle": shuffle})
+    
+    else:
+        return redirect('index')
+
+def all_playlists(request):
+    if request.user.is_authenticated:
+        playlists = Playlist.objects.filter(user=request.user)
+        return render(request, 'main/all_playlists.html', {"playlists": playlists})
+
+    else:
+        return redirect('index')
