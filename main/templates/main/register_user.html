@@ -1,18 +1,38 @@
 {% extends 'main/base.html' %}
 
 {% block heading %}
-    <title>Register Today!</title>
-    <style>
-        
-    </style>
+    <title>Register</title>
 {% endblock %}
 
 {% block body %}
-    <form method="post" class="authentication-form">
-        {% csrf_token %}
-        <input placeholder="Username" type="text" name="username" required>
-        <input placeholder="Password" type="password" name="password" required>
-        <input placeholder="Confirm Password" type="password" name="password2" required>
-        <button type="submit">Register</button>
-    </form>
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-4">
+            <div class="card card-dark">
+                <div class="card-body">
+                    <h2 class="card-title text-center mb-4">Register</h2>
+                    
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <input type="text" class="form-control form-control-dark" 
+                                   name="username" placeholder="Username" required>
+                        </div>
+                        <div class="mb-3">
+                            <input type="password" class="form-control form-control-dark" 
+                                   name="password" placeholder="Password" required>
+                        </div>
+                        <div class="mb-3">
+                            <input type="password" class="form-control form-control-dark" 
+                                   name="password2" placeholder="Confirm Password" required>
+                        </div>
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-spotify">
+                                <i class="bi bi-person-plus me-2"></i>Register
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

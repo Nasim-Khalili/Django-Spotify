@@ -2,62 +2,90 @@
 
 {% block heading %}
     <title>{{ playlist.name }}</title>
-    <style>
-        .hidden-player {
-            position: absolute;
-            left: 9999999px;
-        }
-        .play-button {
-            padding: 10px 20px;
-            background-color: green;
-            color: white;
-            border: none;
-            margin-bottom: 10px;
-        }
-        .song-list {
-            margin-top: 20px;
-            display: grid;
-            place-items: center;
-        }
-    </style>
 {% endblock %}
 
-    {% block body %}
-    <h2 class="playlist-title">Playlist: {{ playlist.name }}</h2>
+{% block body %}
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <!-- Playlist Header -->
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1 class="text-spotify">
+                    <i class="bi bi-collection-play me-2"></i>
+                    {{ playlist.name }}
+                </h1>
+                
+                <!-- Shuffle Button -->
+                <form method="GET" class="mb-0">
+                    <input type="hidden" name="play" value="{% if play_song %}{{ play_song.id }}{% endif %}">
+                    <input type="hidden" name="shuffle" value="{% if shuffle %}false{% else %}true{% endif %}">
+                    <button type="submit" class="btn btn-spotify">
+                        {% if shuffle %}
+                            <i class="bi bi-shuffle"></i> Disable Shuffle
+                        {% else %}
+                            <i class="bi bi-shuffle"></i> Enable Shuffle
+                        {% endif %}
+                    </button>
+                </form>
+            </div>
 
-    <form method="GET" class="shuffle-form">
-        <input type="hidden" name="play" value="{% if play_song %}{{ play_song.id }}{% endif %}">
-        <input type="hidden" name="shuffle" value="{% if shuffle %}false{% else %}true{% endif %}">
-        <button type="submit" class="shuffle-button">
-            {% if shuffle %} Disable Shuffle {% else %} Enable Shuffle {% endif %}
-        </button>
-    </form>
+            <!-- Songs List -->
+            <div class="card card-dark">
+                <div class="card-header">
+                    <h3 class="mb-0">
+                        <i class="bi bi-music-note-list me-2"></i>
+                        Songs
+                    </h3>
+                </div>
+                <div class="card-body p-0">
+                    <ul class="list-group list-group-flush">
+                        {% for song in playlist.song.all %}
+                            <li class="list-group-item bg-secondary-custom d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h5 class="mb-1">{{ song.title }}</h5>
+                                    <small class="text-muted">{{ song.artist }}</small>
+                                </div>
+                                <a href="?play={{ song.id }}&shuffle={{ shuffle }}" class="btn btn-sm btn-spotify">
+                                    <i class="bi bi-play-fill"></i> Play
+                                </a>
+                            </li>
+                        {% empty %}
+                            <li class="list-group-item bg-secondary-custom text-center py-4">
+                                No songs in this playlist yet.
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
 
-    <h3 class="songs-title">Songs:</h3>
-    <ul class="songs-list">
-        {% for song in playlist.song.all %}
-            <li class="song-item">
-                <span>{{ song.title }} - {{ song.artist }}</span>
-                <a href="?play={{ song.id }}&shuffle={{ shuffle }}">
-                    <button class="play-button">Play</button>
-                </a>
-            </li>
-        {% endfor %}
-    </ul>
-
-    {% if play_song %}
-        <iframe class="hidden-player" src="{{ play_song.youtube_url_modify }}" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-        <p class="now-playing">Now Playing: {{ play_song.title }} - {{ play_song.artist }}</p>
-
-        {% if next_song %}
-        <div class="shuffle-form">
-            <a href="?play={{ next_song.id }}&shuffle={{ shuffle }}">
-                <button class="play-button">Play Next: {{ next_song.title }} - {{ next_song.artist }}</button>
-            </a>
+            <!-- Now Playing Section -->
+            {% if play_song %}
+                <div class="card card-dark mt-4">
+                    <div class="card-body text-center">
+                        <h4 class="text-spotify mb-3">
+                            <i class="bi bi-vinyl-fill me-2"></i>
+                            Now Playing
+                        </h4>
+                        <h5>{{ play_song.title }}</h5>
+                        <p class="text-muted">{{ play_song.artist }}</p>
+                        
+                        <iframe class="hidden-player" src="{{ play_song.youtube_url_modify }}" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                        
+                        {% if next_song %}
+                            <div class="mt-3">
+                                <a href="?play={{ next_song.id }}&shuffle={{ shuffle }}" class="btn btn-spotify">
+                                    <i class="bi bi-skip-forward-fill me-2"></i>
+                                    Play Next: {{ next_song.title }}
+                                </a>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            {% else %}
+                <div class="alert alert-secondary text-center mt-4">
+                    <i class="bi bi-music-note-beamed me-2"></i>
+                    Select a song to play
+                </div>
+            {% endif %}
         </div>
-        {% endif %}
-    {% else %}
-        <p class="no-song">Click Play Button Now!!!</p>
-    {% endif %}
-
+    </div>
 {% endblock %}

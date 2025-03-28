@@ -1,53 +1,46 @@
-
 {% extends 'main/base.html' %}
 
 {% block heading %}
-    <title>All Code NaNa - Spotify Clone</title>
-    <style>
-        .hidden-player {
-            position: absolute;
-            left: 9999999px;
-        }
-        .play-button {
-            padding: 10px 20px;
-            background-color: green;
-            color: white;
-            border: none;
-            margin-bottom: 10px;
-        }
-        .song-list {
-            margin-top: 20px;
-            display: grid;
-            place-items: center;
-        }
-    </style>
+    <title>Spotify Clone - Home</title>
 {% endblock %}
 
 {% block body %}
-    <div class="song-list">
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
         {% for song in songs %}
-            <h3>{{ song.title }}</h3>
-            <a href="?play={{ song.id }}">
-                <button class="play-button">Play</button>
-            </a>
-            <form method="post">
-                {% csrf_token %}
-                <input type="hidden" name="song_id" value="{{ song.id }}">
-                <select name="playlist_id" required>
-                    <option value="" selected disabled>Select Playlist</option>
-                    {% for playlist in playlists %}
-                        <option value="{{ playlist.id }}">{{ playlist.name }}</option>
-                    {% endfor %}
-                </select>
-                <button type="submit">Add To Playlist</button>
-            </form>
-            <br>
-            <img style="width: 300px;" src="{{ song.cover_image.url }}" alt="">
+            <div class="col">
+                <div class="card card-dark h-100">
+                    <img src="{{ song.cover_image.url }}" class="card-img-top" alt="{{ song.title }}">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ song.title }}</h5>
+                        
+                        <div class="d-flex gap-2 mb-3">
+                            <a href="?play={{ song.id }}" class="btn btn-spotify flex-grow-1">
+                                <i class="bi bi-play-fill me-2"></i>Play
+                            </a>
+                        </div>
+                        
+                        <form method="post" class="mt-auto">
+                            {% csrf_token %}
+                            <input type="hidden" name="song_id" value="{{ song.id }}">
+                            <div class="mb-3">
+                                <select name="playlist_id" class="form-select form-control-dark" required>
+                                    <option value="" selected disabled>Select Playlist</option>
+                                    {% for playlist in playlists %}
+                                        <option value="{{ playlist.id }}">{{ playlist.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-spotify w-100">
+                                <i class="bi bi-plus-circle me-2"></i>Add to Playlist
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
         {% endfor %}
     </div>
 
     {% if play_song %}
         <iframe class="hidden-player" src="{{ play_song.youtube_url_modify }}" allow="autoplay; encrypted-media" allowfullscreen></iframe>
     {% endif %}
-
 {% endblock %}

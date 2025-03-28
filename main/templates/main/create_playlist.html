@@ -1,13 +1,30 @@
 {% extends 'main/base.html' %}
 
 {% block heading %}
-    <title>Create New Playlist!</title>
+    <title>Create New Playlist</title>
 {% endblock %}
 
 {% block body %}
-<form method="post" class="create-playlist-form">
-    {% csrf_token %}
-    <input placeholder="Name of the playlist..." type="text" name="name-playlist" required>
-    <button type="submit">Create</button>
-</form>
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card card-dark">
+                <div class="card-body">
+                    <h2 class="card-title text-center mb-4">Create New Playlist</h2>
+                    
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <input type="text" class="form-control form-control-dark" 
+                                   name="name-playlist" placeholder="Playlist name" required>
+                        </div>
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-spotify">
+                                <i class="bi bi-plus-circle me-2"></i>Create Playlist
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

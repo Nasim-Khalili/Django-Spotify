@@ -5,14 +5,26 @@
 {% endblock %}
 
 {% block body %}
-    <h2 class="playlist-title">Your Playlists</h2>
-    <ul class="playlist-list">
-        {% for playlist in playlists %}
-            <li class="playlist-item">
-                <a href="{% url 'view_playlist' playlist.pk %}" class="playlist-link">
-                    {{ playlist.name }}
-                </a>
-            </li>
-        {% endfor %}
-    </ul>
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <h1 class="text-center mb-4">Your Playlists</h1>
+            
+            <div class="d-grid gap-3">
+                {% for playlist in playlists %}
+                    <a href="{% url 'view_playlist' playlist.pk %}" class="card card-dark text-decoration-none">
+                        <div class="card-body">
+                            <h5 class="card-title mb-0">
+                                <i class="bi bi-collection-play me-2"></i>
+                                {{ playlist.name }}
+                            </h5>
+                        </div>
+                    </a>
+                {% empty %}
+                    <div class="alert alert-secondary text-center">
+                        You don't have any playlists yet.
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
 {% endblock %}
