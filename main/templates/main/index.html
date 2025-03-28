@@ -1,66 +1,53 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>NaNa - Spotify</title>
+
+{% extends 'main/base.html' %}
+
+{% block heading %}
+    <title>All Code NaNa - Spotify Clone</title>
     <style>
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-            min-height: 100vh;
-            background-color: #000;
-            font-family: Arial, sans-serif;
-            text-align: center;
-        }
-
-        .song-container {
-            background: white;
-            padding: 20px;
-            margin: 20px;
-            margin-bottom: 10px
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(70, 69, 69, 0.2);
-            width: 250px;
-            text-align: center;
-        }
-
-        .play-button {
-            padding: 10px 20px;
-            background-color: orange;
-            color: white;
-            border: none;
-            margin-top: 10px;
-            cursor: pointer;
-            border-radius: 5px;
-            transition: 0.3s;
-        }
-
         .hidden-player {
             position: absolute;
-            left: -999999px;
+            left: 9999999px;
         }
-
-        img {
-            width: 200px;
-            border-radius: 10px;
-            margin-top: 10px
+        .play-button {
+            padding: 10px 20px;
+            background-color: green;
+            color: white;
+            border: none;
+            margin-bottom: 10px;
+        }
+        .song-list {
+            margin-top: 20px;
+            display: grid;
+            place-items: center;
         }
     </style>
-</head>
-<body>
-    {% for song in songs %}
-    <div class="song-container">
-        <h3>{{ song.title }}</h3>
-        <a href="?play={{ song.id }}">
-            <button class="play-button">Play</button>
-        </a>
-        <img src="{{ song.cover_image.url }}" alt="">
+{% endblock %}
+
+{% block body %}
+    <div class="song-list">
+        {% for song in songs %}
+            <h3>{{ song.title }}</h3>
+            <a href="?play={{ song.id }}">
+                <button class="play-button">Play</button>
+            </a>
+            <form method="post">
+                {% csrf_token %}
+                <input type="hidden" name="song_id" value="{{ song.id }}">
+                <select name="playlist_id" required>
+                    <option value="" selected disabled>Select Playlist</option>
+                    {% for playlist in playlists %}
+                        <option value="{{ playlist.id }}">{{ playlist.name }}</option>
+                    {% endfor %}
+                </select>
+                <button type="submit">Add To Playlist</button>
+            </form>
+            <br>
+            <img style="width: 300px;" src="{{ song.cover_image.url }}" alt="">
+        {% endfor %}
     </div>
-    {% endfor %}
 
     {% if play_song %}
         <iframe class="hidden-player" src="{{ play_song.youtube_url_modify }}" allow="autoplay; encrypted-media" allowfullscreen></iframe>
     {% endif %}
-</body>
-</html>
+
+{% endblock %}
