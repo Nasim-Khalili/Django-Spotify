@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from .models import Song
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
+from .models import Playlist
 
 def index(request):
     songs = Song.objects.all()
@@ -11,8 +12,15 @@ def index(request):
     if play_song_id:
         play_song = get_object_or_404(Song, id=play_song_id)
     
-    return render(request,'main/index.html', {'songs':songs, 'play_song': play_song})
+    playlists = Playlist.objects.filter(user=request.user) if request.user.is_authenticated else []
 
+    return render(request, 'main/index.html', {
+        'songs': songs,
+        'play_song': play_song,
+        'playlists': playlists 
+    })
+
+    
 def register_user(request):
     if request.method == "POST":
         username = request.POST['username']
