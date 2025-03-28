@@ -1,0 +1,18 @@
+{% extends 'main/base.html' %}
+
+{% block heading %}
+    <title>Playlists</title>
+{% endblock %}
+
+{% block body %}
+    <h2 class="playlist-title">Your Playlists</h2>
+    <ul class="playlist-list">
+        {% for playlist in playlists %}
+            <li class="playlist-item">
+                <a href="{% url 'view_playlist' playlist.pk %}" class="playlist-link">
+                    {{ playlist.name }}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}
