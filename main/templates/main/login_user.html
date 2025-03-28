@@ -1,26 +1,14 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Login</title>
-</head>
-<body style="display: flex; justify-content: center; align-items: center; flex-direction: column; min-height: 100vh; background-color: #000; font-family: Arial, sans-serif; text-align: center;">
+{% extends 'main/base.html' %}
 
-    <form method="post" 
-        style="background: white; padding: 20px; margin: auto; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); width: 250px; text-align: center;">
-        
+{% block heading %}
+    <title>Login Today!</title>
+{% endblock %}
+
+{% block body %}
+    <form method="post" class="authentication-form">
         {% csrf_token %}
-
-        <input placeholder="Username" type="text" name="username" required 
-            style="width: 90%; padding: 10px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 5px; display: block; margin: auto; ">
-<br>
-        <input placeholder="Password" type="password" name="password" required 
-            style="width: 90%; padding: 10px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 5px; display: block; margin: auto; ">
-
-        <button type="submit" 
-            style="padding: 10px 20px; background-color: orange; color: white; border: none; border-radius: 5px; cursor: pointer; width: 100%; transition: 0.3s; margin-top: 10px;">
-            Login
-        </button>
+        <input placeholder="Username" type="text" name="username" required>
+        <input placeholder="Password" type="password" name="password" required>
+        <button type="submit">Login</button>
     </form>
-
-</body>
-</html>
+{% endblock %}
